@@ -145,7 +145,7 @@ impl Display for CursorIcon {
 
 #[derive(Debug, Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
-struct WebviewWindowOptions<'a> {
+struct WindowOptions<'a> {
     url: Option<&'a str>,
     center: bool,
     x: Option<i32>,
@@ -175,7 +175,7 @@ struct WebviewWindowOptions<'a> {
     user_agent: Option<&'a str>,
 }
 
-impl<'a> Default for WebviewWindowOptions<'a> {
+impl<'a> Default for WindowOptions<'a> {
     fn default() -> Self {
         Self {
             url: None,
@@ -210,12 +210,12 @@ impl<'a> Default for WebviewWindowOptions<'a> {
 }
 
 #[derive(Debug, Default, Clone, Serialize)]
-pub struct WebviewWindowBuilder<'a> {
+pub struct WindowBuilder<'a> {
     label: &'a str,
-    base: WebviewWindowOptions<'a>,
+    base: WindowOptions<'a>,
 }
 
-impl<'a> WebviewWindowBuilder<'a> {
+impl<'a> WindowBuilder<'a> {
     pub fn new(label: &'a str) -> Self {
         Self {
             label,
@@ -382,10 +382,10 @@ impl<'a> WebviewWindowBuilder<'a> {
     /// Creates a new webview window.
     ///
     /// Requires [`allowlist > window > create`](https://tauri.app/v1/api/config#windowallowlistconfig.create) to be enabled.
-    pub async fn build(&self) -> crate::Result<WebviewWindow> {
+    pub async fn build(&self) -> crate::Result<Window> {
         let opts = serde_wasm_bindgen::to_value(&self.base)?;
 
-        let win = WebviewWindow(base::WebviewWindow::new(self.label, opts));
+        let win = Window(base::Window::new(self.label, opts));
         win.once::<()>("tauri://created").await?;
         Ok(win)
     }
@@ -395,11 +395,11 @@ impl<'a> WebviewWindowBuilder<'a> {
 ///
 /// Windows are identified by a label a unique identifier that can be used to reference it later. It may only contain alphanumeric characters a-zA-Z plus the following special characters -, /, : and _.
 #[derive(Debug, Clone, PartialEq)]
-pub struct WebviewWindow(base::WebviewWindow);
+pub struct Window(base::Window);
 
-impl WebviewWindow {
+impl Window {
     pub fn get_by_label(label: &str) -> Option<Self> {
-        base::WebviewWindow::getByLabel(label).map(Self)
+        base::Window::getByLabel(label).map(Self)
     }
 
     /// The label of this window.
@@ -977,7 +977,7 @@ impl Monitor {
     }
 }
 
-/// Get an instance of [`WebviewWindow`] for the current webview window.
+/// Get an instance of [`Window`] for the current webview window.
 ///
 /// # Example
 ///
@@ -989,11 +989,11 @@ impl Monitor {
 /// # Ok(())
 /// # }
 /// ```
-pub fn current_window() -> WebviewWindow {
-    WebviewWindow(base::getCurrent())
+pub fn current_window() -> Window {
+    Window(base::getCurrent())
 }
 
-/// Gets a list of instances of [`WebviewWindow`] for all available webview windows.
+/// Gets a list of instances of [`Window`] for all available webview windows.
 ///
 /// # Example
 ///
@@ -1010,10 +1010,10 @@ pub fn current_window() -> WebviewWindow {
 /// # Ok(())
 /// # }
 /// ```
-pub fn all_windows() -> impl IntoIterator<Item = WebviewWindow> {
+pub fn all_windows() -> impl IntoIterator<Item = Window> {
     let raw = base::getAll();
 
-    ArrayIterator::new(raw).map(|r| WebviewWindow(base::WebviewWindow::from(r)))
+    ArrayIterator::new(raw).map(|r| Window(base::Window::from(r)))
 }
 
 /// Returns the monitor on which the window currently resides.
@@ -1168,24 +1168,24 @@ mod base {
     #[wasm_bindgen(module = "/src/scripts/api/window.js")]
     extern "C" {
         #[derive(Debug, Clone, PartialEq)]
-        pub type WebviewWindowHandle;
+        pub type WindowHandle;
         #[wasm_bindgen(constructor)]
-        pub fn new(label: &str) -> WebviewWindowHandle;
+        pub fn new(label: &str) -> WindowHandle;
         #[wasm_bindgen(method, catch)]
         pub async fn listen(
-            this: &WebviewWindowHandle,
+            this: &WindowHandle,
             event: &str,
             handler: &Closure<dyn FnMut(JsValue)>,
         ) -> Result<JsValue, JsValue>;
         #[wasm_bindgen(method, catch)]
         pub async fn once(
-            this: &WebviewWindowHandle,
+            this: &WindowHandle,
             event: &str,
             handler: &Closure<dyn FnMut(JsValue)>,
         ) -> Result<JsValue, JsValue>;
         #[wasm_bindgen(method, catch)]
         pub async fn emit(
-            this: &WebviewWindowHandle,
+            this: &WindowHandle,
             event: &str,
             payload: JsValue,
         ) -> Result<(), JsValue>;
@@ -1193,7 +1193,7 @@ mod base {
 
     #[wasm_bindgen(module = "/src/scripts/api/window.js")]
     extern "C" {
-        #[wasm_bindgen(extends = WebviewWindowHandle)]
+        #[wasm_bindgen(extends = WindowHandle)]
         #[derive(Debug, Clone, PartialEq)]
         pub type WindowManager;
         #[wasm_bindgen(constructor)]
@@ -1330,17 +1330,17 @@ mod base {
     extern "C" {
         #[wasm_bindgen(extends = WindowManager)]
         #[derive(Debug, Clone, PartialEq)]
-        pub type WebviewWindow;
+        pub type Window;
         #[wasm_bindgen(constructor)]
-        pub fn new(label: &str, options: JsValue) -> WebviewWindow;
-        #[wasm_bindgen(static_method_of = WebviewWindow)]
-        pub fn getByLabel(label: &str) -> Option<WebviewWindow>;
+        pub fn new(label: &str, options: JsValue) -> Window;
+        #[wasm_bindgen(static_method_of = Window)]
+        pub fn getByLabel(label: &str) -> Option<Window>;
     }
 
     #[wasm_bindgen(module = "/src/scripts/api/window.js")]
     extern "C" {
-        pub fn getCurrent() -> WebviewWindow;
-        pub fn getAll() -> Array;
+        pub fn getCurrentWindow() -> Window;
+        pub fn getAllWindows() -> Array;
         #[wasm_bindgen(catch)]
         pub async fn currentMonitor() -> Result<JsValue, JsValue>;
         #[wasm_bindgen(catch)]
