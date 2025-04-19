@@ -486,6 +486,15 @@ impl Window {
 
         Ok(serde_wasm_bindgen::from_value(js_val)?)
     }
+    pub async fn set_theme(&self, theme:&str) -> crate::Result<()> {
+        self.0.setTheme(theme).await?;
+        Ok(())
+    }
+    pub async fn title(&self) -> crate::Result<String> {
+        let js_val = self.0.title().await?;
+        Ok(serde_wasm_bindgen::from_value(js_val)?)
+    }
+
 
     /// Centers the window.
     ///
@@ -1225,12 +1234,16 @@ mod base {
         #[wasm_bindgen(method, catch)]
         pub async fn theme(this: &WindowManager) -> Result<JsValue, JsValue>;
         #[wasm_bindgen(method, catch)]
+        pub async fn title(this: &WindowManager) -> Result<JsValue, JsValue>;
+        #[wasm_bindgen(method, catch)]
         pub async fn center(this: &WindowManager) -> Result<(), JsValue>;
         #[wasm_bindgen(method, catch)]
         pub async fn requestUserAttention(
             this: &WindowManager,
             requestType: u32,
         ) -> Result<(), JsValue>;
+        #[wasm_bindgen(method, catch)]
+        pub async fn setTheme(this: &WindowManager, theme: &str) -> Result<(), JsValue>;
         #[wasm_bindgen(method, catch)]
         pub async fn setResizable(this: &WindowManager, resizable: bool) -> Result<(), JsValue>;
         #[wasm_bindgen(method, catch)]
