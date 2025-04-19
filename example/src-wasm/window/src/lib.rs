@@ -18,8 +18,8 @@ pub async fn  change_theme(){
     let win=window::current_window();
     let theme=win.theme().await.unwrap();
     if(theme==Theme::Dark){
-        win.set_theme("light").await.unwrap();
+        win.set_theme(Theme::Light).await.unwrap();
     }else{
-        win.set_theme("dark").await.unwrap();
+        win.set_theme(Theme::Dark).await.unwrap();
     }
 }

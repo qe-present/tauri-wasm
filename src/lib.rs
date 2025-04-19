@@ -159,7 +159,6 @@ impl From<JsValue> for Error {
         Self::Command(format!("{:?}", e))
     }
 }
-
 #[cfg(any(feature = "dialog", feature = "window"))]
 pub(crate) mod utils {
     pub struct ArrayIterator {

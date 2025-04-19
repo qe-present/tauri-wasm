@@ -1,0 +1,148 @@
+[INFO]: Checking for the Wasm target...
+[INFO]: Compiling to Wasm...
+   Compiling tauri-wasm v0.1.0 (C:\Users\26644\Desktop\test\tauri-wasm)
+warning: unused import: `crate::api::window::Theme`
+    --> C:\Users\26644\Desktop\test\tauri-wasm\src\api\window.rs:1112:9
+     |
+1112 |     use crate::api::window::Theme;
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = note: `#[warn(unused_imports)]` on by default
+
+warning: unused variable: `js_val`
+ --> C:\Users\26644\Desktop\test\tauri-wasm\src\api\app.rs:6:9
+  |
+6 |     let js_val = base::defaultWindowIcon().await?;
+  |         ^^^^^^ help: if this is intentional, prefix it with an underscore: `_js_val`
+  |
+  = note: `#[warn(unused_variables)]` on by default
+
+error[E0277]: the trait bound `std::result::Result<(), wasm_bindgen::JsValue>: JsCast` is not satisfied
+  --> C:\Users\26644\Desktop\test\tauri-wasm\src\api\app.rs:93:5
+   |
+93 |     #[wasm_bindgen(module = "/src/scripts/api/app.js")]
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `JsCast` is not implemented for `std::result::Result<(), wasm_bindgen::JsValue>`
+   |
+   = help: the following other types implement trait `JsCast`:
+             Array
+             ArrayBuffer
+             BigInt
+             BigInt64Array
+             BigUint64Array
+             Boolean
+             Collator
+             CompileError
+           and 60 others
+   = note: this error originates in the attribute macro `wasm_bindgen` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `wasm_bindgen::JsValue: From<std::result::Result<(), wasm_bindgen::JsValue>>` is not satisfied
+   --> C:\Users\26644\Desktop\test\tauri-wasm\src\api\app.rs:93:5
+    |
+93  |     #[wasm_bindgen(module = "/src/scripts/api/app.js")]
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `From<std::result::Result<(), wasm_bindgen::JsValue>>` is not implemented for `wasm_bindgen::JsValue`
+    |
+    = help: the following other types implement trait `From<T>`:
+              `wasm_bindgen::JsValue` implements `From<&T>`
+              `wasm_bindgen::JsValue` implements `From<&std::string::String>`
+              `wasm_bindgen::JsValue` implements `From<&str>`
+              `wasm_bindgen::JsValue` implements `From<*const T>`
+              `wasm_bindgen::JsValue` implements `From<*mut T>`
+              `wasm_bindgen::JsValue` implements `From<Array>`
+              `wasm_bindgen::JsValue` implements `From<ArrayBuffer>`
+              `wasm_bindgen::JsValue` implements `From<BigInt64Array>`
+            and 111 others
+    = note: required for `std::result::Result<(), wasm_bindgen::JsValue>` to implement `Into<wasm_bindgen::JsValue>`
+note: required by a bound in `unchecked_from_js`
+   --> C:\Users\26644\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\wasm-bindgen-0.2.100\src\cast.rs:17:28
+    |
+17  |     Self: AsRef<JsValue> + Into<JsValue>,
+    |                            ^^^^^^^^^^^^^ required by this bound in `JsCast::unchecked_from_js`
+...
+145 |     fn unchecked_from_js(val: JsValue) -> Self;
+    |        ----------------- required by a bound in this associated function
+    = note: this error originates in the attribute macro `wasm_bindgen` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unused variable: `js_val`
+  --> C:\Users\26644\Desktop\test\tauri-wasm\src\api\app.rs:12:9
+   |
+12 |     let js_val = base::setTheme(theme).await?;
+   |         ^^^^^^ help: if this is intentional, prefix it with an underscore: `_js_val`
+
+error[E0277]: the trait bound `Theme: IntoWasmAbi` is not satisfied
+   --> C:\Users\26644\Desktop\test\tauri-wasm\src\api\app.rs:103:38
+    |
+103 |         pub async fn setTheme(theme: Theme) -> Result<JsValue, JsValue>;
+    |                                      ^^^^^ the trait `IntoWasmAbi` is not implemented for `Theme`
+    |
+    = help: the following other types implement trait `IntoWasmAbi`:
+              &'a Array
+              &'a ArrayBuffer
+              &'a BigInt
+              &'a BigInt64Array
+              &'a BigUint64Array
+              &'a Boolean
+              &'a Collator
+              &'a CompileError
+            and 236 others
+
+error[E0277]: the trait bound `Theme: IntoWasmAbi` is not satisfied
+  --> C:\Users\26644\Desktop\test\tauri-wasm\src\api\app.rs:93:5
+   |
+93 |     #[wasm_bindgen(module = "/src/scripts/api/app.js")]
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `IntoWasmAbi` is not implemented for `Theme`
+   |
+   = help: the following other types implement trait `IntoWasmAbi`:
+             &'a Array
+             &'a ArrayBuffer
+             &'a BigInt
+             &'a BigInt64Array
+             &'a BigUint64Array
+             &'a Boolean
+             &'a Collator
+             &'a CompileError
+           and 236 others
+   = note: this error originates in the attribute macro `wasm_bindgen` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: irrefutable `if let` pattern
+   --> C:\Users\26644\Desktop\test\tauri-wasm\src\plugin\dialog.rs:173:12
+    |
+173 |         if let Ok(files) = Array::try_from(raw) {
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: this pattern will always match, so the `if let` is useless
+    = help: consider replacing the `if let` with a `let`
+    = note: `#[warn(irrefutable_let_patterns)]` on by default
+
+warning: irrefutable `if let` pattern
+   --> C:\Users\26644\Desktop\test\tauri-wasm\src\plugin\dialog.rs:223:12
+    |
+223 |         if let Ok(files) = Array::try_from(raw) {
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: this pattern will always match, so the `if let` is useless
+    = help: consider replacing the `if let` with a `let`
+
+error[E0277]: the trait bound `Theme: wasm_bindgen::describe::WasmDescribe` is not satisfied
+   --> C:\Users\26644\Desktop\test\tauri-wasm\src\api\app.rs:103:38
+    |
+103 |         pub async fn setTheme(theme: Theme) -> Result<JsValue, JsValue>;
+    |                                      ^^^^^ the trait `wasm_bindgen::describe::WasmDescribe` is not implemented for `Theme`
+    |
+    = help: the following other types implement trait `wasm_bindgen::describe::WasmDescribe`:
+              &T
+              &mut T
+              ()
+              *const T
+              *mut T
+              Array
+              ArrayBuffer
+              BigInt
+            and 113 others
+
+For more information about this error, try `rustc --explain E0277`.
+warning: `tauri-wasm` (lib) generated 5 warnings
+error: could not compile `tauri-wasm` (lib) due to 6 previous errors; 5 warnings emitted
+Error: Compiling your crate to WebAssembly failed
+Caused by: Compiling your crate to WebAssembly failed
+Caused by: failed to execute `cargo build`: exited with exit code: 101
+  full command: "cargo" "build" "--lib" "--target" "wasm32-unknown-unknown"
