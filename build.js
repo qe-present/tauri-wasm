@@ -12,6 +12,7 @@ const OUT_PLUGINS   = "src/scripts/plugins";
 
 const REPLACEMENTS  = [
     [ "@tauri-apps/api/core",   "tauri-v2/packages/api/src/core.ts"   ],
+    ["@tauri-apps/api/image",  "tauri-v2/packages/api/src/image.ts"  ],
     [ "@tauri-apps/api/path",   "tauri-v2/packages/api/src/path.ts"   ],
     [ "@tauri-apps/api/event",  "tauri-v2/packages/api/src/event.ts"  ],
     [ "@tauri-apps/api/window", "tauri-v2/packages/api/src/window.ts" ]
