@@ -1100,13 +1100,13 @@ pub async fn available_monitors() -> crate::Result<impl Iterator<Item = Monitor>
 
     Ok(monitors)
 }
-
 mod base {
     use js_sys::Array;
     use wasm_bindgen::{
         prelude::{wasm_bindgen, Closure},
         JsValue,
     };
+    
 
     #[wasm_bindgen(module = "/src/scripts/api/window.js")]
     extern "C" {

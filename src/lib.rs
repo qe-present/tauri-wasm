@@ -92,6 +92,8 @@ pub mod plugin {
     /// # OS bindings
     #[cfg(feature = "os")]
     pub mod os;
+    #[cfg(feature = "opener")]
+    pub mod opener;
     /// # Positioner bindings
     #[cfg(feature = "positioner")]
     pub mod positioner;

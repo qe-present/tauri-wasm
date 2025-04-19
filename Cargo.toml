@@ -42,6 +42,7 @@ plugin-all = [
     "shell",
     "sql",
     "store",
+    "opener",
     "stronghold",
     "updater",
     "upload",
@@ -63,6 +64,7 @@ log = []
 nfc = []
 notification = []
 os = []
+opener = []
 positioner = []
 process = []
 shell = []
