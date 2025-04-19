@@ -3,6 +3,7 @@ pub mod console {
 
     #[wasm_bindgen]
     extern "C" {
+        
         #[wasm_bindgen(js_namespace = console, js_name = clear)]
         pub fn clear();
         #[wasm_bindgen(js_namespace = console, js_name = debug)]

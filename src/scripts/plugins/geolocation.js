@@ -58,29 +58,51 @@ var Channel = class {
     return this[SERIALIZE_TO_IPC_FN]();
   }
 };
+async function checkPermissions(plugin) {
+  return invoke(`plugin:${plugin}|check_permissions`);
+}
 async function invoke(cmd, args = {}, options) {
   return window.__TAURI_INTERNALS__.invoke(cmd, args, options);
 }
 
-// tauri-plugins/plugins/biometric/guest-js/index.ts
-var BiometryType = /* @__PURE__ */ ((BiometryType2) => {
-  BiometryType2[BiometryType2["None"] = 0] = "None";
-  BiometryType2[BiometryType2["TouchID"] = 1] = "TouchID";
-  BiometryType2[BiometryType2["FaceID"] = 2] = "FaceID";
-  BiometryType2[BiometryType2["Iris"] = 3] = "Iris";
-  return BiometryType2;
-})(BiometryType || {});
-async function checkStatus() {
-  return await invoke("plugin:biometric|status");
+// tauri-plugins/plugins/geolocation/guest-js/index.ts
+async function watchPosition(options, cb) {
+  const channel = new Channel();
+  channel.onmessage = (message) => {
+    if (typeof message === "string") {
+      cb(null, message);
+    } else {
+      cb(message);
+    }
+  };
+  await invoke("plugin:geolocation|watch_position", {
+    options,
+    channel
+  });
+  return channel.id;
 }
-async function authenticate(reason, options) {
-  await invoke("plugin:biometric|authenticate", {
-    reason,
-    ...options
+async function getCurrentPosition(options) {
+  return await invoke("plugin:geolocation|get_current_position", {
+    options
+  });
+}
+async function clearWatch(channelId) {
+  await invoke("plugin:geolocation|clear_watch", {
+    channelId
+  });
+}
+async function checkPermissions2() {
+  return await checkPermissions("geolocation");
+}
+async function requestPermissions(permissions) {
+  return await invoke("plugin:geolocation|request_permissions", {
+    permissions
   });
 }
 export {
-  BiometryType,
-  authenticate,
-  checkStatus
+  checkPermissions2 as checkPermissions,
+  clearWatch,
+  getCurrentPosition,
+  requestPermissions,
+  watchPosition
 };

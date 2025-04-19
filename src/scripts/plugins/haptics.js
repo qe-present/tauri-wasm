@@ -1,7 +1,7 @@
 // tauri-v2/packages/api/src/core.ts
 var SERIALIZE_TO_IPC_FN = "__TAURI_TO_IPC_KEY__";
-function transformCallback(callback, once = false) {
-  return window.__TAURI_INTERNALS__.transformCallback(callback, once);
+function transformCallback(callback, once2 = false) {
+  return window.__TAURI_INTERNALS__.transformCallback(callback, once2);
 }
 var Channel = class {
   /** The callback id returned from {@linkcode transformCallback} */
@@ -62,25 +62,74 @@ async function invoke(cmd, args = {}, options) {
   return window.__TAURI_INTERNALS__.invoke(cmd, args, options);
 }
 
-// tauri-plugins/plugins/biometric/guest-js/index.ts
-var BiometryType = /* @__PURE__ */ ((BiometryType2) => {
-  BiometryType2[BiometryType2["None"] = 0] = "None";
-  BiometryType2[BiometryType2["TouchID"] = 1] = "TouchID";
-  BiometryType2[BiometryType2["FaceID"] = 2] = "FaceID";
-  BiometryType2[BiometryType2["Iris"] = 3] = "Iris";
-  return BiometryType2;
-})(BiometryType || {});
-async function checkStatus() {
-  return await invoke("plugin:biometric|status");
-}
-async function authenticate(reason, options) {
-  await invoke("plugin:biometric|authenticate", {
-    reason,
-    ...options
-  });
-}
+// tauri-plugins/plugins/haptics/guest-js/bindings.ts
+var commands = {
+  async vibrate(duration) {
+    try {
+      return {
+        status: "ok",
+        data: await invoke("plugin:haptics|vibrate", { duration })
+      };
+    } catch (e) {
+      if (e instanceof Error)
+        throw e;
+      else
+        return { status: "error", error: e };
+    }
+  },
+  async impactFeedback(style) {
+    try {
+      return {
+        status: "ok",
+        data: await invoke("plugin:haptics|impact_feedback", { style })
+      };
+    } catch (e) {
+      if (e instanceof Error)
+        throw e;
+      else
+        return { status: "error", error: e };
+    }
+  },
+  async notificationFeedback(type) {
+    try {
+      return {
+        status: "ok",
+        data: await invoke("plugin:haptics|notification_feedback", {
+          type
+        })
+      };
+    } catch (e) {
+      if (e instanceof Error)
+        throw e;
+      else
+        return { status: "error", error: e };
+    }
+  },
+  async selectionFeedback() {
+    try {
+      return {
+        status: "ok",
+        data: await invoke("plugin:haptics|selection_feedback")
+      };
+    } catch (e) {
+      if (e instanceof Error)
+        throw e;
+      else
+        return { status: "error", error: e };
+    }
+  }
+};
+
+// tauri-plugins/plugins/haptics/guest-js/index.ts
+var {
+  vibrate,
+  impactFeedback,
+  notificationFeedback,
+  selectionFeedback
+} = commands;
 export {
-  BiometryType,
-  authenticate,
-  checkStatus
+  impactFeedback,
+  notificationFeedback,
+  selectionFeedback,
+  vibrate
 };

@@ -35,20 +35,27 @@ tauri-wasm = { git = "https://github.com/p1mo/tauri-wasm", features = [
 ### Usage
 
 ```rust
-use tauri_wasm::api::app::{get_name, get_version};
-use wasm_bindgen_futures::spawn_local;
+use tauri_wasm::js::console;
+use wasm_bindgen::prelude::*;
+use tauri_wasm::api::window;
+use tauri_wasm::api::window::Theme;
+// src/lib.rs
+#[wasm_bindgen]
+pub async fn  change_theme(){
+    let win=window::current_window();
+    let theme=win.theme().await.unwrap();
+    if(theme==Theme::Dark){
+        win.set_theme("light").await.unwrap();
+    }else{
+        win.set_theme("dark").await.unwrap();
+    }
+}
 
-fn main() {
-
-    spawn_local(async move {
-
-        let name: String = get_name().await.unwrap();
-        let version: String = get_version().await.unwrap();
-
-        println!("name: {}, version: {}", name, version);
-
-    });
-
+```
+```typescript
+import { change_theme } from "./pkg/your_project_name";
+async function func(){
+    await change_theme();
 }
 ```
 

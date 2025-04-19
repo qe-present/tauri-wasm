@@ -12,6 +12,7 @@ use futures::{
 use js_sys::Array;
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use std::fmt::Display;
+use serde_wasm_bindgen::to_value;
 use wasm_bindgen::{prelude::Closure, JsCast, JsValue};
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -486,8 +487,9 @@ impl Window {
 
         Ok(serde_wasm_bindgen::from_value(js_val)?)
     }
-    pub async fn set_theme(&self, theme:&str) -> crate::Result<()> {
-        self.0.setTheme(theme).await?;
+    pub async fn set_theme(&self, theme:Theme) -> crate::Result<()> {
+        let theme_value=to_value(&theme).unwrap();
+        self.0.setTheme(theme_value).await?;
         Ok(())
     }
     pub async fn title(&self) -> crate::Result<String> {
@@ -1107,6 +1109,7 @@ mod base {
         prelude::{wasm_bindgen, Closure},
         JsValue,
     };
+    use crate::api::window::Theme;
 
     #[wasm_bindgen(module = "/src/scripts/api/window.js")]
     extern "C" {
@@ -1243,7 +1246,7 @@ mod base {
             requestType: u32,
         ) -> Result<(), JsValue>;
         #[wasm_bindgen(method, catch)]
-        pub async fn setTheme(this: &WindowManager, theme: &str) -> Result<(), JsValue>;
+        pub async fn setTheme(this: &WindowManager, theme:JsValue) -> Result<(), JsValue>;
         #[wasm_bindgen(method, catch)]
         pub async fn setResizable(this: &WindowManager, resizable: bool) -> Result<(), JsValue>;
         #[wasm_bindgen(method, catch)]

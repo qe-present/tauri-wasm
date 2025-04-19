@@ -1,4 +1,33 @@
 use semver::Version;
+use serde_wasm_bindgen::to_value;
+use crate::api::window::Theme;
+
+/// # Example
+/// ```rust,no_run
+/// use tauri_wasm::api::app::default_window_icon;
+/// use tauri_wasm::api::window::Theme;
+/// default_window_icon().await;
+/// ```
+#[inline(always)]
+pub async fn default_window_icon() -> crate::Result<()> {
+    let js_val = base::defaultWindowIcon().await?;
+    Ok(())
+}
+/// # Example
+/// ```rust,no_run
+/// use tauri_wasm::api::app::set_theme;
+/// use tauri_wasm::api::window::Theme;
+/// set_theme(Theme::Dark).await;
+/// ```
+///
+#[inline(always)]
+pub async fn set_theme(theme: Theme) -> crate::Result<()> {
+    let js_val = to_value(&theme)?;
+    base::setTheme(js_val).await?;
+    Ok(())
+}
+
+
 
 /// # Example
 ///
@@ -73,15 +102,19 @@ pub async fn hide() -> crate::Result<()> {
 
 mod base {
     use wasm_bindgen::{prelude::wasm_bindgen, JsValue};
+    use crate::api::window::Theme;
 
     #[wasm_bindgen(module = "/src/scripts/api/app.js")]
     extern "C" {
+        pub async fn defaultWindowIcon()->Result<(),JsValue>;
         #[wasm_bindgen(catch)]
         pub async fn getName() -> Result<JsValue, JsValue>;
         #[wasm_bindgen(catch)]
         pub async fn getTauriVersion() -> Result<JsValue, JsValue>;
         #[wasm_bindgen(catch)]
         pub async fn getVersion() -> Result<JsValue, JsValue>;
+        #[wasm_bindgen(catch)]
+        pub async fn setTheme(theme: JsValue) -> Result<(), JsValue>;
         #[wasm_bindgen(catch)]
         pub async fn hide() -> Result<(), JsValue>;
         #[wasm_bindgen(catch)]
