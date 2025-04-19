@@ -7,19 +7,13 @@ extern "C" {
 }
 
 #[wasm_bindgen]
-pub async fn getTitle() {
+pub async fn get_title() {
     let win=window::current_window();
     let title=win.title().await.unwrap();
     console::log(&format!("title: {}", title).as_str());
 }
 #[wasm_bindgen]
-pub async fn  changeTheme(){
+pub async fn  change_theme(){
     let win=window::current_window();
-    let theme=win.theme().await.unwrap();
-    console::log(&format!("theme: {}", theme).as_str());
-    if theme=="dark"{
-        win.set_theme("light").await.unwrap();
-    }else{
-        win.set_theme("dark").await.unwrap();
-    }
+    win.set_theme("dark").await.unwrap();
 }

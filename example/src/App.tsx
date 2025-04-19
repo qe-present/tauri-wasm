@@ -1,6 +1,6 @@
 import "./App.css";
 import {useEffect} from "react";
-import init from "../src-wasm/window/pkg";
+import init,{change_theme} from "../src-wasm/window/pkg";
 
 function App() {
     useEffect(() => {
@@ -9,6 +9,7 @@ function App() {
 
     async function handlClick() {
         // await getTitle()
+        await change_theme();
 
     }
 
