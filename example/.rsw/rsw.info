@@ -1,0 +1,3 @@
+[RSW::ERR]
+[RSW::NAME] :~> src-wasm/window
+[RSW::BUILD] :~> wasm-pack build .\src-wasm/window --out-dir pkg --target web --dev

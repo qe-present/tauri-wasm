@@ -1,0 +1,122 @@
+[INFO]: Checking for the Wasm target...
+[INFO]: Compiling to Wasm...
+warning: unexpected `cfg` condition value: `webview`
+  --> C:\Users\26644\Desktop\test\tauri-wasm\src\lib.rs:41:11
+   |
+41 |     #[cfg(feature = "webview")]
+   |           ^^^^^^^^^^^^^^^^^^^
+   |
+   = note: expected values for `feature` are: `all`, `app`, `authenticator`, `autostart`, `barcode-scanner`, `biometric`, `cli`, `clipboard-manager`, `core`, `deep-link`, `dialog`, `dpi`, `event`, `fs`, `global-shortcut`, `http`, `log`, `menu`, `mocks`, `nfc`, `notification`, `os`, `path`, `plugin-all`, `positioner`, `process`, `shell`, `sql`, `store`, `stronghold`, `tray`, `updater`, `upload`, `websocket`, and `window` and 1 more
+   = help: consider adding `webview` as a feature in `Cargo.toml`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+   = note: `#[warn(unexpected_cfgs)]` on by default
+
+warning: irrefutable `if let` pattern
+   --> C:\Users\26644\Desktop\test\tauri-wasm\src\plugin\dialog.rs:173:12
+    |
+173 |         if let Ok(files) = Array::try_from(raw) {
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: this pattern will always match, so the `if let` is useless
+    = help: consider replacing the `if let` with a `let`
+    = note: `#[warn(irrefutable_let_patterns)]` on by default
+
+warning: irrefutable `if let` pattern
+   --> C:\Users\26644\Desktop\test\tauri-wasm\src\plugin\dialog.rs:223:12
+    |
+223 |         if let Ok(files) = Array::try_from(raw) {
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: this pattern will always match, so the `if let` is useless
+    = help: consider replacing the `if let` with a `let`
+
+warning: struct `FsTextFileOption` is never constructed
+  --> C:\Users\26644\Desktop\test\tauri-wasm\src\plugin\fs.rs:79:8
+   |
+79 | struct FsTextFileOption {
+   |        ^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: fields `all`, `http`, and `https` are never read
+  --> C:\Users\26644\Desktop\test\tauri-wasm\src\plugin\http.rs:6:5
+   |
+4  | pub struct Proxy {
+   |            ----- fields in this struct
+5  |     /// Proxy all traffic to the passed URL.
+6  |     all : Option<String>,
+   |     ^^^
+7  |     /// Proxy all HTTP traffic to the passed URL.
+8  |     http : Option<String>,
+   |     ^^^^
+9  |     /// Proxy all HTTPS traffic to the passed URL.
+10 |     https : Option<String>,
+   |     ^^^^^
+
+warning: fields `username` and `password` are never read
+  --> C:\Users\26644\Desktop\test\tauri-wasm\src\plugin\http.rs:15:5
+   |
+14 | pub struct BasicAuth {
+   |            --------- fields in this struct
+15 |     username: String,
+   |     ^^^^^^^^
+16 |     password: String,
+   |     ^^^^^^^^
+
+warning: fields `url`, `basic_auth`, and `no_proxy` are never read
+  --> C:\Users\26644\Desktop\test\tauri-wasm\src\plugin\http.rs:22:5
+   |
+20 | pub struct ProxyConfig {
+   |            ----------- fields in this struct
+21 |     /// The URL of the proxy server.
+22 |     url: String,
+   |     ^^^
+23 |     /// Set the `Proxy-Authorization` header using Basic auth.
+24 |     basic_auth: Option<BasicAuth>,
+   |     ^^^^^^^^^^
+...
+27 |     no_proxy: Option<String>,
+   |     ^^^^^^^^
+
+warning: fields `max_redirections`, `connect_timeout`, and `proxy` are never read
+  --> C:\Users\26644\Desktop\test\tauri-wasm\src\plugin\http.rs:35:5
+   |
+32 | pub struct ClientOptions {
+   |            ------------- fields in this struct
+...
+35 |     max_redirections: Option<usize>,
+   |     ^^^^^^^^^^^^^^^^
+36 |     /// Timeout in milliseconds
+37 |     connect_timeout: Option<usize>,
+   |     ^^^^^^^^^^^^^^^
+38 |     /// Configuration of a proxy that a Client should pass requests to.
+39 |     proxy: Option<Proxy>,
+   |     ^^^^^
+
+warning: `tauri-wasm` (lib) generated 8 warnings
+   Compiling src-wasm v0.1.0 (C:\Users\26644\Desktop\test\tauri-wasm\example\src-wasm\window)
+error[E0277]: `Theme` doesn't implement `std::fmt::Display`
+  --> src\lib.rs:19:40
+   |
+19 |     console::log(&format!("theme: {}", theme).as_str());
+   |                                        ^^^^^ `Theme` cannot be formatted with the default formatter
+   |
+   = help: the trait `std::fmt::Display` is not implemented for `Theme`
+   = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+   = note: this error originates in the macro `$crate::__export::format_args` which comes from the expansion of the macro `format` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0308]: mismatched types
+  --> src\lib.rs:20:15
+   |
+20 |     if theme=="dark"{
+   |        -----  ^^^^^^ expected `Theme`, found `&str`
+   |        |
+   |        expected because this is `Theme`
+
+Some errors have detailed explanations: E0277, E0308.
+For more information about an error, try `rustc --explain E0277`.
+error: could not compile `src-wasm` (lib) due to 2 previous errors
+Error: Compiling your crate to WebAssembly failed
+Caused by: Compiling your crate to WebAssembly failed
+Caused by: failed to execute `cargo build`: exited with exit code: 101
+  full command: "cargo" "build" "--lib" "--target" "wasm32-unknown-unknown"
