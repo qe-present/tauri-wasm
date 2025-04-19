@@ -8,3 +8,6 @@
 	path = tauri-plugins
 	url = https://github.com/tauri-apps/plugins-workspace
 	branch = v2
+[submodule "packages"]
+	path = packages
+	url = https://github.com/tauri-apps/tauri.git

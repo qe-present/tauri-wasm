@@ -1,7 +1,7 @@
 [package]
 name    = "tauri-wasm"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [package.metadata.docs.rs]
 all-features = true
@@ -10,7 +10,7 @@ all-features = true
 
 [features]
 # Api
-all = [ "app", "core", "dpi", "event", "menu", "mocks", "path", "tray", "window" ]
+all = [ "app", "core", "dpi", "event", "menu", "mocks", "path", "tray", "window", "webview"]
 app = [ "dep:semver"] 
 core = []
 dpi = []
@@ -20,7 +20,7 @@ mocks = []
 path = []
 tray = ["dep:url"]
 window = ["dep:futures", "event"]
-# Plugins
+webview = []
 plugin-all = [
     "authenticator",
     "autostart",
@@ -80,9 +80,9 @@ window-state = []
 js-sys = "0.3.77"
 serde = "1.0.195"
 serde_repr = "0.1.18"
-serde-wasm-bindgen = "0.6.3"
+serde-wasm-bindgen = "0.6.5"
 wasm-bindgen = "0.2.100"
-wasm-bindgen-futures = "0.4.40"
+wasm-bindgen-futures = "0.4.50"
 thiserror = "2.0.12"
 futures = { version = "0.3.30", optional = true }
 url = {version = "2.5.0", optional = true, features = ["serde"]}
